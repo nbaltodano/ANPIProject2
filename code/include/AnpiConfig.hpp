@@ -9,4 +9,4 @@
 
 #define ANPI_ENABLE_SIMD
 /* #undef ANPI_ENABLE_OpenMP */
-#define ANPI_DATA_PATH "/home/diego/Escritorio/ANPIProject2/code/data"
+#define ANPI_DATA_PATH "/home/diego/Escritorio/Proyecto2/ANPIProject2/code/data"

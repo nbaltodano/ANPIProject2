@@ -18,6 +18,8 @@
 #include <opencv2/core.hpp>    // For cv::Mat
 #include <opencv2/highgui.hpp> // For cv::imread/imshow
 
+#include "LUDoolittle.hpp"    //LU with SSE and normal implementation
+
 #include <Matrix.hpp>
 #include <Exception.hpp>
 
@@ -48,8 +50,9 @@ int main() {
   //
   // cv::waitKey();
 
-  anpi::Matrix<float,std::allocator<float> > atmp(9,1,float(5));
-  anpi::Matrix<float> a(atmp);
-  std::cout << a.dcols() << "   " << a.cols() << "    " << a.rows() << std::endl;
+  // anpi::Matrix<float,std::allocator<float> > atmp(9,1,float(5));
+  // anpi::Matrix<float> a(atmp);
+  // std::cout << a.dcols() << "   " << a.cols() << "    " << a.rows() << std::endl;
+  anpi::aimpl::imprimir();
   return EXIT_SUCCESS;
 }

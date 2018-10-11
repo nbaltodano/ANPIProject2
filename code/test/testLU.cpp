@@ -91,10 +91,10 @@ BOOST_AUTO_TEST_SUITE( LU )
 
 BOOST_AUTO_TEST_CASE(Doolittle) 
 {
-  anpi::test::luTest<float>(anpi::luDoolittle<float>,
-                            anpi::unpackDoolittle<float>);
-  anpi::test::luTest<double>(anpi::luDoolittle<double>,
-                             anpi::unpackDoolittle<double>);
+  anpi::test::luTest<float>(anpi::aimpl::luDoolittle<float>,
+                            anpi::aimpl::unpackDoolittle<float>);
+  anpi::test::luTest<double>(anpi::aimpl::luDoolittle<double>,
+                             anpi::aimpl::unpackDoolittle<double>);
 }
 
 BOOST_AUTO_TEST_CASE(Crout) 

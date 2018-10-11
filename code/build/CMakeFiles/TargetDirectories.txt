@@ -1,0 +1,16 @@
+/home/diego/Escritorio/Proyecto2/ANPIProject2/code/build/CMakeFiles/rebuild_cache.dir
+/home/diego/Escritorio/Proyecto2/ANPIProject2/code/build/CMakeFiles/test.dir
+/home/diego/Escritorio/Proyecto2/ANPIProject2/code/build/CMakeFiles/edit_cache.dir
+/home/diego/Escritorio/Proyecto2/ANPIProject2/code/build/src/CMakeFiles/rebuild_cache.dir
+/home/diego/Escritorio/Proyecto2/ANPIProject2/code/build/src/CMakeFiles/test.dir
+/home/diego/Escritorio/Proyecto2/ANPIProject2/code/build/src/CMakeFiles/anpi.dir
+/home/diego/Escritorio/Proyecto2/ANPIProject2/code/build/src/CMakeFiles/edit_cache.dir
+/home/diego/Escritorio/Proyecto2/ANPIProject2/code/build/src/CMakeFiles/proyecto2.dir
+/home/diego/Escritorio/Proyecto2/ANPIProject2/code/build/test/CMakeFiles/rebuild_cache.dir
+/home/diego/Escritorio/Proyecto2/ANPIProject2/code/build/test/CMakeFiles/edit_cache.dir
+/home/diego/Escritorio/Proyecto2/ANPIProject2/code/build/test/CMakeFiles/tester.dir
+/home/diego/Escritorio/Proyecto2/ANPIProject2/code/build/test/CMakeFiles/test.dir
+/home/diego/Escritorio/Proyecto2/ANPIProject2/code/build/benchmarks/CMakeFiles/rebuild_cache.dir
+/home/diego/Escritorio/Proyecto2/ANPIProject2/code/build/benchmarks/CMakeFiles/edit_cache.dir
+/home/diego/Escritorio/Proyecto2/ANPIProject2/code/build/benchmarks/CMakeFiles/benchmark.dir
+/home/diego/Escritorio/Proyecto2/ANPIProject2/code/build/benchmarks/CMakeFiles/test.dir

@@ -1,0 +1,2 @@
+/usr/bin/ar qc libanpi.a  CMakeFiles/anpi.dir/paths.cpp.o
+/usr/bin/ranlib libanpi.a
