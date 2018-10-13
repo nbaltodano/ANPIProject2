@@ -67,6 +67,19 @@ void imprimir(std::vector<size_t> res){
 
   namespace fallback {
 
+    template<typename T>
+    void solveLU(const anpi::Matrix<T>& A,std::vector<size_t>& x, const std::vector<size_t>& b);
+    template<typename T>
+    void unpackDoolittle(const Matrix<T>& LU,Matrix<T>& L,Matrix<T>& U);
+    template<typename T>
+    void permutation(unsigned int col,Matrix<T>& LU,std::vector<size_t>& permut);
+    template<typename T>
+    void luDoolittle(const Matrix<T>& A, Matrix<T>& LU,
+                   std::vector<size_t>& permut);
+    template<typename T>
+    void luinv(Matrix<T>& inv, Matrix<T>& LU);
+
+
      /**
    * Solve a sistem of equations with QR decomposition.
    * @param[in]  A :matrix to decompose
@@ -78,7 +91,7 @@ void imprimir(std::vector<size_t> res){
   void solveLU(const anpi::Matrix<T>& A,std::vector<size_t>& x, const std::vector<size_t>& b){
     anpi::Matrix<T> LU;
     std::vector<size_t> permut;
-    lu(A,LU,permut);
+    anpi::fallback::luDoolittle(A,LU,permut);
     std::vector<size_t> temp;
     temp.resize(b.size());
     x.resize(b.size());
@@ -259,6 +272,15 @@ void imprimir(std::vector<size_t> res){
   namespace simd {
   
   template<typename T>
+  void solveLU(const anpi::Matrix<T>& A,std::vector<size_t>& x, const std::vector<size_t>& b);
+  template<typename T>
+  void unpackDoolittle(const Matrix<T>& LU,Matrix<T>& L,Matrix<T>& U);
+  template<typename T>
+  void permutation(unsigned int col,Matrix<T>& LU,std::vector<size_t>& permut);
+  template<typename T>
+  void luDoolittle(const Matrix<T>& A, Matrix<T>& LU,
+                   std::vector<size_t>& permut);
+  template<typename T>
   void mm_permut(T *a,T* b,unsigned int* j);
   template<typename T>
   int tamanoDePaso();
@@ -371,6 +393,7 @@ void imprimir(std::vector<size_t> res){
       alloc.deallocate(factors,4);                                         //Free memory
       *i+=4;
     }
+
   /////////////////////////////////////////////////////////////////////    
   #elif  defined __SSE2__
     template<>
@@ -570,7 +593,7 @@ void imprimir(std::vector<size_t> res){
    */
   template<typename T>
   void solveLU(const anpi::Matrix<T>& A,std::vector<size_t>& x, const std::vector<size_t>& b){
-
+    anpi::fallback::solveLU(A,x,b);   //Does not implement Inttrinsics 
   }
 
     /**
@@ -610,7 +633,7 @@ void imprimir(std::vector<size_t> res){
           permutation(k,LU,permut);                           //Permut the matrix to get a better pivot.
           for(unsigned int i=k+1;i<LU.cols();++i){            //Under the diagonal.
             const T factor = LU[i][k]/LU[k][k];               //Store the factor (pivot).
-            for(unsigned int j=k;j<LU.cols();++j){
+            for(unsigned int j=k;j<LU.cols();){
               if (j%anpi::simd::tamanoDePaso<T>()==0){        //Operation with AVX512 || AVX || SSE2
                 anpi::simd::opOverRows<T>(factor,&LU[i][j],&LU[k][j],&j);
               }else{                                          //Normal operation over the matrix
@@ -634,7 +657,7 @@ void imprimir(std::vector<size_t> res){
      */
     template<typename T>
     void unpackDoolittle(const Matrix<T>& LU,Matrix<T>& L,Matrix<T>& U) {
-    
+      anpi::fallback::unpackDoolittle(LU,L,U);
     }
   
 
