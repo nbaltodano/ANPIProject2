@@ -10,7 +10,6 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include "LUCrout.hpp"
 #include "LUDoolittle.hpp"
 
 #include <iostream>
@@ -56,7 +55,8 @@ namespace anpi {
         std::vector<size_t> p;
         decomp(A,LU,p);
 
-        std::vector<size_t> gp= {1,0,3,2};
+
+        std::vector<size_t> gp= {1,3,0,2};
         BOOST_CHECK(gp==p);
       }
       
@@ -64,7 +64,7 @@ namespace anpi {
       {
         // same matrix as before, but already permuted to force a
         // clean decomposition
-        anpi::Matrix<T> A = { { 2, 0,1,2},{-1,-2,1,2},{ 1, 1,1,1},{-1,-1,0,1} };
+        anpi::Matrix<T> A = { { 2, 0,1,2},{1,1,1,1},{-1,-2,1,2},{-1,-1,0,1} };
         std::vector<size_t> p;
         decomp(A,LU,p);
         Matrix<T> L,U;
@@ -75,7 +75,7 @@ namespace anpi {
 
         BOOST_CHECK(Ar.rows()==A.rows());
         BOOST_CHECK(Ar.cols()==A.cols());
-
+      
         for (size_t i=0;i<Ar.rows();++i) {
           for (size_t j=0;j<Ar.cols();++j) {
             BOOST_CHECK(std::abs(Ar(i,j)-A(i,j)) < eps);
@@ -91,16 +91,15 @@ BOOST_AUTO_TEST_SUITE( LU )
 
 BOOST_AUTO_TEST_CASE(Doolittle) 
 {
-  anpi::test::luTest<float>(anpi::aimpl::luDoolittle<float>,
-                            anpi::aimpl::unpackDoolittle<float>);
-  anpi::test::luTest<double>(anpi::aimpl::luDoolittle<double>,
-                             anpi::aimpl::unpackDoolittle<double>);
-}
+  anpi::test::luTest<float>(anpi::fallback::luDoolittle<float>,
+                            anpi::fallback::unpackDoolittle<float>);
+  anpi::test::luTest<double>(anpi::fallback::luDoolittle<double>,
+                             anpi::fallback::unpackDoolittle<double>);
 
-BOOST_AUTO_TEST_CASE(Crout) 
-{
-  anpi::test::luTest<float>(anpi::luCrout<float>,anpi::unpackCrout<float>);
-  anpi::test::luTest<double>(anpi::luCrout<double>,anpi::unpackCrout<double>);
+  // anpi::test::luTest<float>(anpi::simd::luDoolittle<float>,
+  //                           anpi::simd::unpackDoolittle<float>);
+  // anpi::test::luTest<double>(anpi::simd::luDoolittle<double>,
+  //                            anpi::simd::unpackDoolittle<double>);
 }
 
 

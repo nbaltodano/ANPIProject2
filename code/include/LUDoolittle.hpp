@@ -437,17 +437,13 @@ void imprimir(std::vector<size_t> res){
       std::allocator<float> alloc;
       float* factors = alloc.allocate(4);
       factors[0] = factor; factors[1] = factor; factors[2] = factor; factors[3] = factor;
-      __m128d tmpA  = _mm_load_pd(reinterpret_cast<double*>(a));          //Cast pointers to double and load into __m128d
-      __m128d tmpB  = _mm_load_pd(reinterpret_cast<double*>(b));          //Cast pointers to double and load into __m128d
-      __m128d tmpF  = _mm_load_pd(reinterpret_cast<double*>(factors));    //Cast pointers to double and load into __m128d
+      __m128 tmpA = _mm_load_ps(a);                            //Load "a"       into a __128d register
+      __m128 tmpB = _mm_load_ps(b);                            //Load "b"       into a __128d register
+      __m128 tmpF = _mm_load_ps(factors);                      //Load "factors" into a __128d register
 
-      __m128i tmpA1 = _mm_castpd_si128 (tmpA);                            //Cast pointers from __m128d to __m128i
-      __m128i tmpB1 = _mm_castpd_si128 (tmpB);                            //Cast pointers from __m128d to __m128i
-      __m128i tmpF1 = _mm_castpd_si128 (tmpF);                            //Cast pointers from __m128d to __m128i
-      
-      __m128i FB  = _mm_madd_epi16 (tmpF1,tmpB1);                         //Multiply Factors with "b".
-      __m128i res = _mm_sub_epi32 (tmpA1,FB);                             //Subtract A - Factors * b
-      _mm_storeu_pd (reinterpret_cast<double*>(a),_mm_castsi128_pd (res));//Store res in memory (4 floats of 64 bits)      
+      __m128 FB  = _mm_mul_ps (tmpF,tmpB);                     //Multiply Factors with "b".
+      __m128 res = _mm_sub_ps (tmpA,FB);                       //Subtract A - Factors * b
+      _mm_store_ps (a,res);                                     //Store res in memory (two doubles of 64 bits)      
 
       alloc.deallocate(factors,4);                                        //Free memory
       *i+=4;
@@ -626,9 +622,6 @@ void imprimir(std::vector<size_t> res){
       //End of the adjust
       if ((A.rows()==permut.size()) && (A.cols()==A.rows())){ //Square matriz and rows of A and size of vector are equals.
         LU = A;                                               //Copy of "A" in "LU".
-        // std::cout << std::endl << std::endl << "Valores de LU: " << LU.dcols() << "   " << LU.cols() << "   " << LU.rows() << std::endl;  
-
-
         for(unsigned int k=0;k<LU.cols()-1;++k){              //Running on the cols
           permutation(k,LU,permut);                           //Permut the matrix to get a better pivot.
           for(unsigned int i=k+1;i<LU.cols();++i){            //Under the diagonal.
@@ -638,6 +631,7 @@ void imprimir(std::vector<size_t> res){
                 anpi::simd::opOverRows<T>(factor,&LU[i][j],&LU[k][j],&j);
               }else{                                          //Normal operation over the matrix
                 LU[i][j]-= factor*LU[k][j];
+                ++j;
               }
             }
             LU[i][k] = factor;

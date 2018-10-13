@@ -26,6 +26,7 @@
 // normal allocator
 
 
+
 typedef std::complex<double> dcomplex;
 
 typedef std::allocator<float> alloc;
@@ -71,17 +72,17 @@ typedef anpi::Matrix<int     ,aralloc> arimatrix;
   func<cmatrix>();          \
   func<dmatrix>();          \
   func<fmatrix>();          \
-  func<imatrix>();          \
-                            \
-  func<acmatrix>();         \
-  func<admatrix>();         \
-  func<afmatrix>();         \
-  func<aimatrix>();         \
-                            \
-  func<arcmatrix>();        \
-  func<ardmatrix>();        \
-  func<arfmatrix>();        \
-  func<arimatrix>();
+  func<imatrix>();          
+                            
+  // func<acmatrix>();         
+  // func<admatrix>();         
+  // func<afmatrix>();         
+  // func<aimatrix>();         
+  //                           
+  // func<arcmatrix>();        
+  // func<ardmatrix>();        
+  // func<arfmatrix>();        
+  // func<arimatrix>();
 
 #else
 # define dispatchTest(func) func<arfmatrix>(); 
@@ -262,6 +263,8 @@ void testArithmetic() {
 
 
     c=M{ {1,2,3},{ 4, 5, 6} } + b;
+
+
     BOOST_CHECK(c==r );
 
     c=a+M{ {7,8,9},{10,11,12} };
@@ -275,6 +278,7 @@ void testArithmetic() {
     
     M c(a);
     c-=b;
+
     BOOST_CHECK( c==r );
     c=a-b;
     BOOST_CHECK( c==r );
