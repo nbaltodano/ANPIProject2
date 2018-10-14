@@ -127,7 +127,7 @@ namespace anpi
                     const size_t _cols,
                     const InitializationType _it);
     explicit Matrix(const size_t rows,
-                    const size_t cols,
+                    const size_t  cols,
                     const InitializationType _it,
                     const allocator_type& _a);
     explicit Matrix(const size_t _rows,
