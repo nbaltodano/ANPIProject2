@@ -16,13 +16,13 @@ namespace anpi
 	struct indexPair
 	{
 		//Row of the first node
-		std::size_t row1,
+		std::size_t row1;
 		//Column of the first node
-		std::size_t col1,
+		std::size_t col1;
 		//Row of the second node
-		std::size_t row2,
+		std::size_t row2;
 		//Column of the second node
-		std::size_t col2,
+		std::size_t col2;
 	};
 
 	struct Nodo
@@ -48,9 +48,11 @@ namespace anpi
 		Matrix<float> rawMap;
 		const size_t lowResist = 1;
 		const size_t highResist = 1000000;
+		cv::Mat<float> rawMap_CV;
 
 		public:
-		//...constructors and other methods
+			Matrix<float> _X, _Y;
+		
 
         ResistorGrid()
         {
@@ -176,19 +178,19 @@ namespace anpi
 
       		// Read the image using the OpenCV
       		cv::imread(mapPath.c_str(),
-                 		CV_LOAD_IMAGE_GRAYSCALE).convertTo(rawMapCV_,CV_32FC1);
-      		rawMapCV_ /= 255.0f; // normalize image range to 0 .. 255
+                 		CV_LOAD_IMAGE_GRAYSCALE).convertTo(rawMap_CV,CV_32FC1);
+      		rawMap_CV /= 255.0f; // normalize image range to 0 .. 255
 
-      		if(rawMapCV_.cols == 0 || rawMapCV_.rows == 0 || rawMapCV_.data == NULL) 
+      		if(rawMap_CV.cols == 0 || rawMap_CV.rows == 0 || rawMap_CV.data == NULL) 
       		{
         		throw anpi::Exception("Problem creating the map");
      		}
 
       		// Convert the OpenCV matrix into an anpi matrix
       		// We have to use the std::allocator to avoid an exact stride
-      		anpi::Matrix<float,std::allocator<float> > amapTmp(static_cast<const size_t>(rawMapCV_.rows),
-            		                                             static_cast<const size_t>(rawMapCV_.cols),
-               			                                          rawMapCV_.ptr<float>());
+      		anpi::Matrix<float,std::allocator<float> > amapTmp(static_cast<const size_t>(rawMap_CV.rows),
+            		                                             static_cast<const size_t>(rawMap_CV.cols),
+               			                                          rawMap_CV.ptr<float>());
       		// And transform it to a SIMD-enabled matrix
       		anpi::Matrix<float> amap(amapTmp);
       		rawMap = amap;
@@ -197,10 +199,10 @@ namespace anpi
       		const size_t totalVariables = 2*rawMap.rows()*rawMap.cols()-(rawMap.rows()+rawMap.cols());
       		A_.allocate(totalVariables,totalVariables);
       		A_.fill(static_cast<float>(0));
-      		X_.allocate(rawMap.rows(),rawMap.cols());
-      		X_.fill(static_cast<float >(0));
-      		Y_.allocate(rawMap.rows(),rawMap.cols());
-      		Y_.fill(static_cast<float >(0));
+      		_X.allocate(rawMap.rows(),rawMap.cols());
+      		_X.fill(static_cast<float >(0));
+      		_Y.allocate(rawMap.rows(),rawMap.cols());
+      		_Y.fill(static_cast<float >(0));
       		return true;
 		}
 
